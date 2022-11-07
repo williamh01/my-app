@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginPage from './components/LoginPage'
+import AdminPage from './components/adminPages/AdminPage'
+import GuestPage from './components/guestPages/GuestPage'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import LayoutAdmin from './components/adminPages/LayoutAdmin'
+import DrawAdmin from './components/adminPages/DrawAdmin';
+import PongAdmin from './components/adminPages/PongAdmin';
+
+import LayoutGuest from './components/guestPages/LayoutGuest'
+import DrawGuest from './components/guestPages/DrawGuest';
+import PongGuest from './components/guestPages/PongGuest';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+
+        <Route path="/adminPage" element={<AdminPage />} />
+        <Route path="/layoutAdmin" element={<LayoutAdmin />} />
+        <Route path="/drawAdmin" element={<DrawAdmin />} />
+        <Route path="/pongAdmin" element={<PongAdmin />} />
+        
+        <Route path="/guestPage" element={<GuestPage />} />
+        <Route path="/layoutGuest" element={<LayoutGuest />} />
+        <Route path="/drawGuest" element={<DrawGuest />} />
+        <Route path="/pongGuest" element={<PongGuest />} />
+          
+      </Routes>
+      </BrowserRouter>
+      </>
   );
 }
 
