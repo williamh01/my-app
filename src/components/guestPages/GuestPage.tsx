@@ -6,8 +6,9 @@ function App() {
     return (
         <>
         <Navbar />
-        <h1>Hello, this is the guest for msles</h1>
-        <Outlet />
+        <div>
+            Guest Page
+        </div>
         </>
     )
 }

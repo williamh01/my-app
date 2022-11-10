@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  signOut,
   signInAnonymously,
-  deleteUser,
   updateProfile,
 } from "firebase/auth";
 import '../App.css';
 import { auth } from "../config";
 import { Link, useNavigate } from 'react-router-dom';
 import { User as FirebaseUser } from "firebase/auth";
+
+import Form from 'react-bootstrap/Form';
 
 function App() {
 
@@ -29,10 +29,8 @@ function App() {
     });
     if (user?.isAnonymous) {
       navigate("/guestPage")
-    } 
-    //else if (!user?.isAnonymous) {
-    //  navigate("/adminPage")
-    //}
+    }
+
   }, [navigate, user])
 
   const login = async () => {
@@ -43,8 +41,10 @@ function App() {
         loginPassword
       );
       console.log(user);
+      navigate("/adminPage")
     } catch (e) {
       console.log(e);
+      navigate("/")
     }
   };
 
@@ -55,59 +55,52 @@ function App() {
       );
       updateProfile(user.user, {displayName: loginGuest})
       console.log(user);
+      navigate("/guestPage")
     } catch (e) {
       console.log(e);
     }
   };
 
-
-  const logout = async () => {
-    await signOut(auth);
-    if (user?.isAnonymous) {
-      deleteUser(user)
-    }
-  };
     return (
+      <div style={{display: 'flex', justifyContent: 'center'}}>
       <div>
-        <div>
-        <h3> Login as Admin</h3>
-        <input
-          placeholder="Email..."
-          onChange={(event) => {
-            setLoginEmail(event.target.value);
+        <h1> Welcome to MSLES 🚀</h1>
+        <div style={{justifyContent: 'center'}}>
+          <h3> Login as Admin</h3>
+            <input
+              placeholder="Email"
+              onChange={(event) => {
+                setLoginEmail(event.target.value);
+              }}
+            />
+          <input
+            placeholder="Password"
+            type="password"
+            onChange={(event) => {
+              setLoginPassword(event.target.value);
           }}
-        />
-        <input
-          placeholder="Password..."
-          onChange={(event) => {
-            setLoginPassword(event.target.value);
-        }}
-        />
+          />
+          <button onClick={login}>Login</button>
+        </div>
 
-        <button onClick={login}> Login</button>
-      </div>
-      <h3>Login as Player: </h3>
+
+      <h3>Login as Player </h3>
       <div>
       <input
-          placeholder="Guest Name..."
+          placeholder="Guest Name"
           onChange={(event) => {
             setGuest(event.target.value);
           }}
         />
-        <button onClick={loginAsGuest}> Login</button>
+        <Link to="/guestPage">
+          <button onClick={loginAsGuest}>Login</button>
+        </Link>
       </div>
-      <div> 
-        <h4> User Logged In: </h4>
-        {user?.uid}
-        <h5> name </h5>
-        {user?.displayName}
+      <div>
+        {auth.currentUser?.email}
       </div>
-
-      <button onClick={logout}> Sign Out </button>
-
-      <Link to="/adminPage">  admin  </Link>
-      <Link to="/guestPage">  guest</Link>
       </div>
+    </div>
     )
 }
 

@@ -1,9 +1,12 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
-import { getAuth } from "firebase/auth";
+import { deleteUser, getAuth, signOut } from "firebase/auth";
+import Button from 'react-bootstrap/Button';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 
 
@@ -12,14 +15,34 @@ function NavbarComponent() {
     const auth = getAuth();
     const navigate = useNavigate();
 
-    const username = async () => await auth.currentUser?.displayName;
-
-    useEffect(() => {
-        const username = async () => await auth.currentUser?.displayName;
-        if (!username) {
-            navigate('/');
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+          setCurrentUser(user)
+        } else {
+          console.log('waiting for user')
         }
     });
+
+    const user = auth.currentUser;
+
+    const [currentUser, setCurrentUser] = useState(user);
+    
+    const logout = async () => {
+        await signOut(auth);
+        setCurrentUser(null)
+        if (user?.isAnonymous) {
+          deleteUser(user)
+        }
+        navigate("/")
+      };
+
+    function printUsername():string | null | undefined {
+        if (currentUser?.displayName == null) {
+            return currentUser?.email;
+        } else {
+            return currentUser?.displayName;
+        }
+    }
 
     return (
         <Navbar bg="dark" variant="dark">
@@ -31,7 +54,10 @@ function NavbarComponent() {
                     <Nav.Link href="/pongGuest">Pong</Nav.Link>
                 </Nav>
                 <Navbar.Brand className="justify-content-end">
-                        Signed in as: {auth.currentUser?.displayName}
+                <Form className="d-flex">
+                    <Navbar.Text>Signed in as: {printUsername()}</Navbar.Text>
+                    <Button variant= 'dark' onClick={logout}> Sign Out </Button>
+                </Form>
                 </Navbar.Brand>
             </Container>
         </Navbar>

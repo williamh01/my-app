@@ -2,18 +2,18 @@ import React from 'react';
 import Navbar from '../Navbar/NavbarGuest'
 import { useState } from 'react';
 
-import DraggableBox from '../layoutComponents/DraggableBox';
+import UnDraggableBox from '../layoutComponents/UnDraggableBox';
 
 function App() {
 
-    const [numberBoxes, setNumberBoxes] = useState([<DraggableBox />, <DraggableBox />, <DraggableBox />])
-    
+    const [numberPosition, setNumberPositions] = useState([{x: 0, y: 0}, {x: 0, y: 100}])
+
     return (
         <>
         <Navbar />
         <div>
             <div className="border border-dark rounded container-lg" style={{ position: 'relative', height: '50vh', padding: '10px', marginBottom: '20px'}}>
-                {numberBoxes.map(box => box)}
+                {numberPosition.map((pos, index) => <UnDraggableBox key={index} deltaPosition={pos}/>)}
             </div>
         </div>
         <div>

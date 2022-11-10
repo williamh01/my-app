@@ -1,19 +1,16 @@
 import Draggable from 'react-draggable';
 import { useState } from 'react';
 
-function App() {
-    type stateType = {
-        deltaPosition: {x: number, y: number},
-        controlledPosition: {x: number, y: number},
-    }
+type stateType = {
+  deltaPosition: {x: number, y: number, isFixed: boolean}
+}
 
+
+function DraggableBox(props: stateType) {
 
     const dragStateStart: stateType = {
         deltaPosition: {
-          x: 0, y: 0
-        },
-        controlledPosition: {
-          x: 0, y: 0
+          x: props.deltaPosition.x, y: props.deltaPosition.y, isFixed: props.deltaPosition.isFixed
         }
       };
 
@@ -25,21 +22,42 @@ function App() {
           deltaPosition: {
             x: x + pos.deltaX,
             y: y + pos.deltaY,
-          },
-          controlledPosition: {
-            x: 0, y: 0
+            isFixed: false
           }
         });
     };
-    
+
     return (
-        <Draggable bounds="parent" onDrag={handleDrag}>
-            <div className="box border border-dark " style={{height: '10vh', width: '10vh', position: 'relative'}}> 
+      <Draggable bounds="parent" onDrag={handleDrag} positionOffset={{x: props.deltaPosition.x, y: props.deltaPosition.y}}>
+          <div className="box border border-dark " style={{height: '100px', width: '100px', position: 'absolute'}}> 
+              <div>x: {dragState.deltaPosition.x.toFixed(0)}, y: {dragState.deltaPosition.y.toFixed(0)}
+              </div>
+          </div>
+    </Draggable>
+    )
+
+    /* if (props.deltaPosition.isFixed) {
+      return (
+        <Draggable bounds="parent" onDrag={handleDrag} position={{x: props.deltaPosition.x, y: props.deltaPosition.y}}>
+            <div className="box border border-dark " style={{height: '100px', width: '100px', position: 'absolute'}}> 
                 <div>x: {dragState.deltaPosition.x.toFixed(0)}, y: {dragState.deltaPosition.y.toFixed(0)}
                 </div>
             </div>
       </Draggable>
-    )
+      )
+    } else {
+      return (
+        <Draggable bounds="parent" onDrag={handleDrag} positionOffset={{x: props.deltaPosition.x, y: props.deltaPosition.y}}>
+            <div className="box border border-dark " style={{height: '100px', width: '100px', position: 'absolute'}}> 
+                <div>x: {dragState.deltaPosition.x.toFixed(0)}, y: {dragState.deltaPosition.y.toFixed(0)}
+                </div>
+            </div>
+      </Draggable>
+      )
+    } */
+
+    
 }
 
-export default App;
+
+export default DraggableBox;
