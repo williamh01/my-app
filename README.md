@@ -2,6 +2,20 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+
+# Dependencies to install
+"bootstrap": "^5.2.2",
+    "firebase": "^9.13.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
+    "react-icons": "^4.6.0",
+    "react-router-dom": "^6.4.2",
+    "typescript": "^4.8.4",
+
 ## Available Scripts
 
 In the project directory, you can run:
